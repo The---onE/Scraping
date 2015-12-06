@@ -16,18 +16,18 @@ index = 1
 
 
 def input_to_utf(string):
-    return string
-    # return string.decode('gbk').encode('utf-8')
+    # return string
+    return string.decode('gbk').encode('utf-8')
 
 
 def input_to_gbk(string):
-    # return string
-    return string.decode('utf-8').encode('gbk')
+    return string
+    # return string.decode('utf-8').encode('gbk')
 
 
 def console_output(string):
-    # return string.decode('utf-8').encode('gbk')
-    return string
+    return string.decode('utf-8').encode('gbk')
+    # return string
 
 
 def file_output(string):
@@ -66,13 +66,13 @@ def save_information(file, inf):
         application_id = get_item('application_id', inf)
         shop_title = get_item('item_shop_title', inf)
 
-        codeinf = '%s' % index + '|' + id + '|' + title + '|' + current_price + '|' + original_price + '|' + item_url\
-                  + '|' + preorder + '|' + shop_title + '|' + shop_url + '|' + image_url + '|' + aim + '|' + num + '|' \
+        codeinf = '%s' % index + '|' + id + '|' + title + '|' + current_price + '|' + original_price + '|' + item_url \
+                  + '|' + preorder + '|' + aim + '|' + shop_title + '|' + shop_url + '|' + image_url + '|' + num + '|' \
                   + rule_id + '|' + seller_id + '|' + app_id + '|' + application_id
         print console_output(codeinf)
 
         fileinf = '%s' % index + ',' + id + ',' + title + ',' + current_price + ',' + original_price + ',' + item_url \
-                  + ',' + preorder + ',' + shop_title + ',' + shop_url + ',' + image_url + ',' + aim + ',' + num + ',' \
+                  + ',' + preorder + ',' + aim + ',' + shop_title + ',' + shop_url + ',' + image_url + ',' + num + ',' \
                   + rule_id + ',' + seller_id + ',' + app_id + ',' + application_id + '\n'
         file.write(file_output(fileinf))
 
@@ -101,6 +101,8 @@ if __name__ == '__main__':
     filename = raw_input('Input the file name of the csv you want to save to:')
 
     with open(input_to_gbk(filename) + '.csv', "w") as file:
+        header = '序号,ID,商品,预售价,原价,商品网址,预购人数,目标人数,店铺,店铺网址,图片网址,数量,rule_id,seller_id,app_id,application_id\n'
+        file.write(file_output(header))
         h = get_html(initial_page)
         j = json.JSONDecoder().decode(h)
         l = j['result']['268982']['result']

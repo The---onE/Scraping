@@ -44,7 +44,7 @@ def saveinformation(file, inf, index, page):
     codeinf = '%s' % index + '|' + category + '|' + title + '|' + picture + '|' + price + '|' + order + '|' + shop + '|' + comment + '|' + '%s' % page
     print consoleoutput(codeinf)
 
-    fileinf = '%s' % index + ',' + category + ',' + title + ',' + picture + ',' + price + ',' + order + ','  + shop + ','+ comment + ',' + '%s' % page + '\n'
+    fileinf = '%s' % index + ',' + category + ',' + title + ',' + picture + ',' + price + ',' + order + ',' + shop + ',' + comment + ',' + '%s' % page + '\n'
     file.write(fileoutput(fileinf))
 
 
@@ -72,6 +72,8 @@ url = raw_input('Input the url you want to scrape, use "{0}" replace the page of
 url = inputtoutf(url)
 
 with open(inputtogbk(filename) + '.csv', "w") as file:
+    fileinf = '序号,分类,标题,图片,价格,购买数,店铺数,评论数,页面\n'
+    file.write(fileoutput(fileinf))
     for i in range(1, maxpage + 1):
         html = gethtml(url.format((i - 1) * 48), data, headers)
         if not getinformation(file, html, i):

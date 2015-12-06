@@ -1,7 +1,8 @@
-import urllib2
+﻿import urllib2
 import re
 
 index = 1
+
 
 def gethtml(url, data, headers):
     request = urllib2.Request(url, data, headers)
@@ -42,6 +43,8 @@ filename = raw_input('Input the file name of the csv you want to save to:')
 url = raw_input('Input the url you want to scrape, use "%s" replace the page of your search:')
 
 with open(filename + '.csv', "w") as file:
+    header = 'Index,title,price,order,page\n'
+    file.write(header)
     for i in range(1, maxpage + 1):
         html = gethtml(url % i, data, headers)
         if (getinformation(file, html, i) == False):

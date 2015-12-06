@@ -40,7 +40,7 @@ def saveinformation(file, inf, index, page):
     price = inf.group(5).replace(',', '.')
     location = inf.group(6).replace(',', '.')
     order = inf.group(7).replace(',', '.')
-    if inf.group(8)  == None:
+    if inf.group(8) == None:
         comment = '0'
     else:
         comment = inf.group(8).replace(',', '.')
@@ -77,6 +77,8 @@ url = raw_input('Input the url you want to scrape, use "{0}" replace the page of
 url = inputtoutf(url)
 
 with open(inputtogbk(filename) + '.csv', "w") as file:
+    fileinf = '序号,ID,分类,标题,图片,价格,地点,购买数,评论数,店铺,页面\n'
+    file.write(fileoutput(fileinf))
     for i in range(1, maxpage + 1):
         html = gethtml(url.format((i - 1) * 44), data, headers)
         if not getinformation(file, html, i):

@@ -78,7 +78,8 @@ if __name__ == '__main__':
     initial_page = raw_input('Input the url you want to scrape:')
     initial_page = input_to_utf(initial_page)
     filename = raw_input('Input the file name of the csv you want to save to:')
-
     with open(input_to_gbk(filename) + '.csv', "w") as file:
+        fileinf = '序号,ID,标题,介绍,Logo网址,图片网址,优惠,价格,定金,券,网址\n'
+        file.write(file_output(fileinf))
         html = get_html(initial_page)
         get_information(file, html)
