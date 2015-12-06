@@ -40,26 +40,30 @@ def get_html(url):
     return html.content
 
 
+def get_item(key, inf):
+    if key in inf:
+        return inf[key].encode('utf-8').replace(',', '.')
+    else:
+        return '-1'
+
+
 def save_information(file, inf, index):
     if len(inf) >= 14:
-        num = inf['item_num'].encode('utf-8').replace(',', '.')
-        preorder = inf['item_pre_current'].encode('utf-8').replace(',', '.')
-        original_price = inf['item_price'].encode('utf-8').replace(',', '.')
-        title = inf['item_title'].encode('utf-8').replace(',', '.')
-        aim = inf['item_pre_text'].encode('utf-8').replace(',', '.')
-        if 'sys_tce_scene_rule_id' in inf:
-            rule_id = inf['sys_tce_scene_rule_id'].encode('utf-8').replace(',', '.')
-        else:
-            rule_id = '0'
-        item_url = inf['item_url'].encode('utf-8').replace(',', '.')
-        current_price = inf['item_current_price'].encode('utf-8').replace(',', '.')
-        id = inf['auction_id'].encode('utf-8').replace(',', '.')
-        shop_url = inf['item_shop_activity_url'].encode('utf-8').replace(',', '.')
-        image_url = inf['item_pic'].encode('utf-8').replace(',', '.')
-        seller_id = inf['seller_id'].encode('utf-8').replace(',', '.')
-        app_id = inf['app_id'].encode('utf-8').replace(',', '.')
-        application_id = inf['application_id'].encode('utf-8').replace(',', '.')
-        shop_title = inf['item_shop_title'].encode('utf-8').replace(',', '.')
+        num = get_item('item_num', inf)
+        preorder = get_item('item_pre_current', inf)
+        original_price = get_item('item_price', inf)
+        title = get_item('item_title', inf)
+        aim = get_item('item_pre_text', inf)
+        rule_id = get_item('sys_tce_scene_rule_id', inf)
+        item_url = get_item('item_url', inf)
+        current_price = get_item('item_current_price', inf)
+        id = get_item('auction_id', inf)
+        shop_url = get_item('item_shop_activity_url', inf)
+        image_url = get_item('item_pic', inf)
+        seller_id = get_item('seller_id', inf)
+        app_id = get_item('app_id', inf)
+        application_id = get_item('application_id', inf)
+        shop_title = get_item('item_shop_title', inf)
 
         codeinf = '%s' % index + '|' + id + '|' + title + '|' + current_price + '|' + original_price + '|' + item_url\
                   + '|' + preorder + '|' + shop_title + '|' + shop_url + '|' + image_url + '|' + aim + '|' + num + '|' \
