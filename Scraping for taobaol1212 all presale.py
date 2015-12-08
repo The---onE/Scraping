@@ -46,7 +46,7 @@ def get_item(key, inf):
         return '-1'
 
 
-def save_information(file, inf):
+def save_information(file, inf, sid):
     global index
 
     if len(inf) >= 14:
@@ -68,12 +68,12 @@ def save_information(file, inf):
 
         codeinf = '%s' % index + '|' + id + '|' + title + '|' + current_price + '|' + original_price + '|' + item_url \
                   + '|' + preorder + '|' + aim + '|' + shop_title + '|' + shop_url + '|' + image_url + '|' + num + '|' \
-                  + rule_id + '|' + seller_id + '|' + app_id + '|' + application_id
+                  + sid + '|' + rule_id + '|' + seller_id + '|' + app_id + '|' + application_id
         print console_output(codeinf)
 
         fileinf = '%s' % index + ',' + id + ',' + title + ',' + current_price + ',' + original_price + ',' + item_url \
                   + ',' + preorder + ',' + aim + ',' + shop_title + ',' + shop_url + ',' + image_url + ',' + num + ',' \
-                  + rule_id + ',' + seller_id + ',' + app_id + ',' + application_id + '\n'
+                  + sid + ',' + rule_id + ',' + seller_id + ',' + app_id + ',' + application_id + '\n'
         file.write(file_output(fileinf))
 
         index += 1
@@ -91,21 +91,21 @@ def get_information(file, html):
         inf_list = j['result'][sid]['result']
 
         for inf in inf_list:
-            save_information(file, inf)
+            save_information(file, inf, sid)
 
 
 if __name__ == '__main__':
-    initial_page = 'https://tce.taobao.com/api/mget.htm?tce_sid=268982'
+    initial_page = 'https://tce.taobao.com/api/mget.htm?tce_sid=257445'
     initial_page = input_to_utf(initial_page)
 
     filename = raw_input('Input the file name of the csv you want to save to:')
 
     with open(input_to_gbk(filename) + '.csv', "w") as file:
-        header = '序号,ID,商品,预售价,原价,商品网址,预购人数,目标人数,店铺,店铺网址,图片网址,数量,rule_id,seller_id,app_id,application_id\n'
+        header = '序号,ID,商品,预售价,原价,商品网址,预购人数,目标人数,店铺,店铺网址,图片网址,数量,分类,rule_id,seller_id,app_id,application_id\n'
         file.write(file_output(header))
         h = get_html(initial_page)
         j = json.JSONDecoder().decode(h)
-        l = j['result']['268982']['result']
+        l = j['result']['257445']['result']
         for i in l:
             url = i['url']
             r = r'www[\s\S]*?(?:pre|route)'
