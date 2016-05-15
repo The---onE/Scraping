@@ -45,16 +45,17 @@ def saveinformation(file, inf, index, page):
     else:
         comment = inf.group(8).replace(',', '.')
     shop = inf.group(9).replace(',', '.')
+    shop_nick = inf.group(10).replace(',', '.')
 
-    codeinf = '%s' % index + '|' + id + '|' + category + '|' + title + '|' + picture + '|' + price + '|' + location + '|' + order + '|' + comment + '|' + shop + '|' + '%s' % page
+    codeinf = '%s' % index + '|' + id + '|' + category + '|' + title + '|' + picture + '|' + price + '|' + location + '|' + order + '|' + comment + '|' + shop + '|' + shop_nick + '|' + '%s' % page
     print consoleoutput(codeinf)
 
-    fileinf = '%s' % index + ',' + id + ',' + category + ',' + title + ',' + picture + ',' + price + ',' + location + ',' + order + ',' + comment + ',' + shop + ',' + '%s' % page + '\n'
+    fileinf = '%s' % index + ',' + id + ',' + category + ',' + title + ',' + picture + ',' + price + ',' + location + ',' + order + ',' + comment + ',' + shop + ',' + shop_nick + ',' + '%s' % page + '\n'
     file.write(fileoutput(fileinf))
 
 
 def getinformation(file, html, page):
-    reg = r'"nid":"(.*?)","category":"(.*?)"[\s\S]*?raw_title":"([\s\S]*?)","pic_url":"//(.+?)"[\s\S]*?view_price":"(.*?)"[\s\S]*?item_loc":"(.*?)"[\s\S]*?sales":"(.*?)人付款"(?:,"comment_count":"([0-9]+?)")*[\s\S]+?nick":"(.*?)"'
+    reg = r'"nid":"(.*?)","category":"(.*?)"[\s\S]*?raw_title":"([\s\S]*?)","pic_url":"//(.+?)"[\s\S]*?view_price":"(.*?)"[\s\S]*?item_loc":"(.*?)"[\s\S]*?sales":"(.*?)人付款"(?:,"comment_count":"([0-9]+?)")*[\s\S]+?user_id":"(.*?)"[\s\S]*?nick":"(.*?)"'
     infre = re.compile(reg)
     inflist = infre.finditer(html)
     flag = False
@@ -77,7 +78,7 @@ url = raw_input('Input the url you want to scrape, use "{0}" replace the page of
 url = inputtoutf(url)
 
 with open(inputtogbk(filename) + '.csv', "w") as file:
-    fileinf = '序号,ID,分类,标题,图片,价格,地点,购买数,评论数,店铺,页面\n'
+    fileinf = '序号,ID,分类,标题,图片,价格,地点,购买数,评论数,店铺ID,店铺名,页面\n'
     file.write(fileoutput(fileinf))
     for i in range(1, maxpage + 1):
         html = gethtml(url.format((i - 1) * 44), data, headers)
