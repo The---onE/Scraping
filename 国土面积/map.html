@@ -16,6 +16,9 @@
         var Shandong = 15;
         var Tianjin = 1;
 
+        var baseCountry = undefined;
+        var baseArea = -1;
+
         // 指定图表的配置项和数据
         var option = {
             title: {
@@ -32,10 +35,14 @@
                     var ChinaPro = wan / China;
                     var ShandongPro = wan / Shandong;
                     var TianjinPro = wan / Tianjin;
-                    return params.seriesName + '<br/>' + params.name + ' : ' + valueString + '(' + wan + '万)<br/>' +
-                        '约' + ChinaPro.toFixed(2) + '个中国<br/>' + 
-                        '约' + ShandongPro.toFixed(2) + '个山东<br/>' + 
+                    var re = params.seriesName + '<br/>' + params.name + ' : ' + valueString + '(' + wan + '万)<br/>' +
+                        '约' + ChinaPro.toFixed(2) + '个中国<br/>' +
+                        '约' + ShandongPro.toFixed(2) + '个山东<br/>' +
                         '约' + TianjinPro.toFixed(2) + '个天津<br/>';
+                    if (baseCountry != undefined && baseArea > 0) {
+                        re += '约' + (value[0] / baseArea) + '个' + baseCountry;
+                    }
+                    return re;
                 }
             },
             toolbox: {
@@ -341,6 +348,11 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+
+        myChart.on('click', function (param) {
+            baseCountry = param.name;
+            baseArea = param.value;
+        });
     </script>
 </body>
 </html>
