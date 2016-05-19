@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>LandArea</title>
     <script src="~/Scripts/echarts.min.js"></script>
-    <script src="~/Scripts/world.js"></script>
+    <script src="~/Scripts/china.js"></script>
     <script src="~/Scripts/jquery-1.8.2.min.js"></script>
 </head>
 <body>
@@ -18,35 +18,23 @@
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 
-        var China = 932;
-        var Shandong = 15;
-        var Tianjin = 1;
-
-        var baseCountry = undefined;
+        var baseProvince = undefined;
         var baseArea = -1;
 
         // 指定图表的配置项和数据
         var option = {
             title: {
-                text: '国土面积',
+                text: '省市面积',
                 left: 'center',
                 top: 'top'
             },
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
-                    var value = (params.value + '').split('.');
-                    var valueString = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
-                    var wan = value[0] / 10000;
-                    var ChinaPro = wan / China;
-                    var ShandongPro = wan / Shandong;
-                    var TianjinPro = wan / Tianjin;
-                    var re = params.seriesName + '<br/>' + params.name + ' : ' + valueString + '(' + wan + '万)<br/>' +
-                        '约' + ChinaPro.toFixed(2) + '个中国<br/>' +
-                        '约' + ShandongPro.toFixed(2) + '个山东<br/>' +
-                        '约' + TianjinPro.toFixed(2) + '个天津<br/>';
-                    if (baseCountry != undefined && baseArea > 0) {
-                        re += '约' + (value[0] / baseArea) + '个' + baseCountry;
+                    var value = params.value;
+                    var re = params.seriesName + '<br/>' + params.name + ' : ' + value + '<br/>';
+                    if (baseProvince != undefined && baseArea > 0) {
+                        re += '约' + (value / baseArea) + '个' + baseProvince;
                     }
                     return re;
                 }
@@ -68,19 +56,19 @@
         myChart.setOption(option);
 
         myChart.on('click', function (param) {
-            baseCountry = param.name;
+            baseProvince = param.name;
             baseArea = param.value;
         });
 
 
         $(function () {
             $.ajax({
-                url: "Content/world_area.json",
+                url: "Content/china_area.json",
                 success: function (result) {
                     dataOption = {
                         visualMap: {
                             min: 0,
-                            max: 12000000,
+                            max: 1250000,
                             text: ['High', 'Low'],
                             realtime: false,
                             calculable: true,
@@ -90,7 +78,7 @@
                             {
                                 name: '国土面积',
                                 type: 'map',
-                                mapType: 'world',
+                                mapType: 'china',
                                 roam: true,
                                 itemStyle: {
                                     emphasis: { label: { show: true } }
@@ -102,9 +90,10 @@
 
                     myChart.setOption(dataOption);
                 }
-                
+
             });
         })
     </script>
+
 </body>
 </html>
