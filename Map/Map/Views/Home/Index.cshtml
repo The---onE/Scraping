@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/echarts.min.js"></script>
+    <script src="~/Scripts/china.js"></script>
+    <script src="~/Scripts/world.js"></script>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <th>
+                    中国地图
+                </th>
+                <th>
+                    世界地图
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <div id="china" style="width: 600px;height:300px;"></div>
+                </td>
+                <td>
+                    <div id="world" style="width: 600px;height:300px;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/ChinaMap/LandArea" target="_blank">省市面积</a>
+                </td>
+                <td>
+                    <a href="/WorldMap/LandArea" target="_blank">国土面积</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        var china = echarts.init(document.getElementById('china'));
+        china.setOption({
+            series: [{
+                name: '中国地图',
+                type: 'map',
+                mapType: 'china',
+            }]
+        });
+
+        var world = echarts.init(document.getElementById('world'));
+        world.setOption({
+            series: [{
+                name: '世界地图',
+                type: 'map',
+                mapType: 'world',
+            }]
+        });
+    </script>
+
+</body>
+</html>
