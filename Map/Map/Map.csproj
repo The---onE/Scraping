@@ -227,6 +227,8 @@
     <Content Include="Views\WorldMap\LandArea.cshtml" />
     <Content Include="Views\ChinaMap\LandArea.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\ChinaMap.cshtml" />
+    <Content Include="Views\Shared\WorldMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

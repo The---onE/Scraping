@@ -1,99 +1,39 @@
 ﻿@{
-    Layout = null;
+    ViewBag.Title = "省市面积";
+    Layout = "~/Views/Shared/ChinaMap.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>LandArea</title>
-    <script src="~/Scripts/echarts.min.js"></script>
-    <script src="~/Scripts/china.js"></script>
-    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
-</head>
-<body>
-    <div id="main" style="width: 1200px;height:600px;"></div>
-    <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
-
-        var baseProvince = undefined;
-        var baseArea = -1;
-
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: '省市面积',
-                left: 'center',
-                top: 'top'
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: function (params) {
-                    var value = params.value;
-                    var re = params.seriesName + '<br/>' + params.name + ' : ' + value + '<br/>';
-                    if (baseProvince != undefined && baseArea > 0) {
-                        re += '约' + (value / baseArea) + '个' + baseProvince;
-                    }
-                    return re;
-                }
-            },
-            toolbox: {
-                show: true,
-                orient: 'vertical',
-                left: 'right',
-                top: 'center',
-                feature: {
-                    dataView: { readOnly: false },
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-        };
-
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-
-        myChart.on('click', function (param) {
-            baseProvince = param.name;
-            baseArea = param.value;
-        });
-
-
-        $(function () {
-            $.ajax({
-                url: "/Content/china_area.json",
-                success: function (result) {
-                    dataOption = {
-                        visualMap: {
-                            min: 0,
-                            max: 1250000,
-                            text: ['High', 'Low'],
-                            realtime: false,
-                            calculable: true,
-                            color: ['orangered', 'yellow', 'lightskyblue']
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: "/Content/china_area.json",
+            success: function (result) {
+                dataOption = {
+                    visualMap: {
+                        min: 0,
+                        max: 1250000,
+                        text: ['High', 'Low'],
+                        realtime: false,
+                        calculable: true,
+                        color: ['orangered', 'yellow', 'lightskyblue']
+                    },
+                    series: [
+                    {
+                        name: '国土面积',
+                        type: 'map',
+                        mapType: 'china',
+                        roam: true,
+                        itemStyle: {
+                            emphasis: { label: { show: true } }
                         },
-                        series: [
-                            {
-                                name: '国土面积',
-                                type: 'map',
-                                mapType: 'china',
-                                roam: true,
-                                itemStyle: {
-                                    emphasis: { label: { show: true } }
-                                },
-                                data: result
-                            }
-                        ]
+                        data: result
                     }
-
-                    myChart.setOption(dataOption);
+                    ]
                 }
 
-            });
-        })
-    </script>
+                myChart.setOption(dataOption);
+            }
 
-</body>
-</html>
+        });
+    })
+</script>
