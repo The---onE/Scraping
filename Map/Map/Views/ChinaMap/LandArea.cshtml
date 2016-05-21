@@ -4,11 +4,29 @@
 }
 
 <script type="text/javascript">
+    var baseProvince = undefined;
+    var baseArea = -1;
+
     $(function () {
         $.ajax({
             url: "/Content/china_area.json",
             success: function (result) {
                 dataOption = {
+                    title: {
+                        text: '省市面积',
+                        left: 'center',
+                        top: 'top'
+                    },
+                    tooltip: {
+                        formatter: function (params) {
+                            var value = params.value;
+                            var re = params.name + ' : ' + value + '<br/>';
+                            if (baseProvince != undefined && baseArea > 0) {
+                                re += '约' + (value / baseArea) + '个' + baseProvince;
+                            }
+                            return re;
+                        }
+                    },
                     visualMap: {
                         min: 0,
                         max: 1250000,
@@ -19,21 +37,19 @@
                     },
                     series: [
                     {
-                        name: '国土面积',
-                        type: 'map',
-                        mapType: 'china',
-                        roam: true,
-                        itemStyle: {
-                            emphasis: { label: { show: true } }
-                        },
+                        name: '中国地图',
                         data: result
                     }
                     ]
                 }
 
-                myChart.setOption(dataOption);
-            }
+                map.setOption(dataOption);
 
+                map.on('click', function (param) {
+                    baseProvince = param.name;
+                    baseArea = param.value;
+                });
+            }
         });
     })
 </script>

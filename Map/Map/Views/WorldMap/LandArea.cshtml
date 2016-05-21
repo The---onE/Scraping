@@ -4,11 +4,40 @@
 }
 
 <script type="text/javascript">
+    var China = 9326410;
+    var Shandong = 153800;
+    var Tianjin = 11300;
+
+    var baseCountry = undefined;
+    var baseArea = -1;
+
     $(function () {
         $.ajax({
             url: "/Content/world_area.json",
             success: function (result) {
                 dataOption = {
+                    title: {
+                        text: '国土面积',
+                        left: 'center',
+                        top: 'top'
+                    },
+                    tooltip: {
+                        formatter: function (params) {
+                            var value = params.value;
+                            //var valueString = value.replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
+                            var ChinaPro = value / China;
+                            var ShandongPro = value / Shandong;
+                            var TianjinPro = value / Tianjin;
+                            var re = params.seriesName + '<br/>' + params.name + ' : ' + value + '<br/>' +
+                                '约' + ChinaPro.toFixed(2) + '个中国<br/>' +
+                                '约' + ShandongPro.toFixed(2) + '个山东<br/>' +
+                                '约' + TianjinPro.toFixed(2) + '个天津<br/>';
+                            if (baseCountry != undefined && baseArea > 0) {
+                                re += '约' + (value / baseArea) + '个' + baseCountry;
+                            }
+                            return re;
+                        }
+                    },
                     visualMap: {
                         min: 0,
                         max: 12000000,
@@ -19,19 +48,18 @@
                     },
                     series: [
                         {
-                            name: '国土面积',
-                            type: 'map',
-                            mapType: 'world',
-                            roam: true,
-                            itemStyle: {
-                                emphasis: { label: { show: true } }
-                            },
+                            name: '世界地图',
                             data: result
                         }
                     ]
                 }
 
-                myChart.setOption(dataOption);
+                map.setOption(dataOption);
+
+                map.on('click', function (param) {
+                    baseCountry = param.name;
+                    baseArea = param.value;
+                });
             }
 
         });
